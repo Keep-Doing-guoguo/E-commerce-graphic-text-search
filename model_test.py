@@ -17,8 +17,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model = ChineseCLIPModel.from_pretrained(model_dir).to(device).eval()
 processor = ChineseCLIPProcessor.from_pretrained(model_dir)
 
-image = Image.open("/Volumes/PSSD/NetThink/pythonProject/7-19-Project/Chinese-CLIP baseline/小狗.jpg")  # 换成你的图片
-texts = ["一只小猫", "一只小狗", "一棵树"]
+image = Image.open("/Volumes/PSSD/NetThink/pythonProject/GITHUB/E-commerce-graphic-text-search/椅子.png")  # 换成你的图片
+texts = ["人", "有人在椅子坐着", "一个人在抽烟"]
 
 inputs = processor(text=texts, images=image, return_tensors="pt", padding=True)
 inputs = {k: v.to(device) for k, v in inputs.items()}

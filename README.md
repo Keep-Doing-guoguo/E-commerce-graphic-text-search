@@ -19,12 +19,17 @@ tsv数据：
 ### 2.📂 数据说明
 
 数据集为 Multimodal_Retrieval.zip，解压后包含以下文件：
+
 	•	MR_train_imgs.tsv：训练集图片集合（格式：item_id \t base64编码图片）
 	•	MR_train_queries.jsonl：训练集搜索 query 及其对应商品 id
+		汇总后就是query、商品id、item_id、base64。其中商品id和item_id是一致的。
+
 	•	MR_valid_imgs.tsv：验证集图片集合（3w张）
 	•	MR_valid_queries.jsonl：验证集搜索 query 及其对应商品 id（5k 条）
+
 	•	MR_test_imgs.tsv：测试集图片集合（3w张）
 	•	MR_test_queries.jsonl：测试集搜索 query（5k 条，无 GT，需要预测）
+
 	•	example_pred.jsonl：测试集提交结果示例
 	•	README.txt：数据说明
 
@@ -37,12 +42,13 @@ tsv数据：
 ### 3.📊 评测指标
 
 采用 Recall@1, Recall@5, Recall@10：
+
 	•	Recall@k：预测结果的前 k 个中，是否包含至少 1 个 GT 商品图片
 	•	MeanRecall = (R@1 + R@5 + R@10) / 3
 
 比赛最终排名使用 MeanRecall。
 
-
+Recall讲究的是：被找到的/（被找到的+漏找到的）
 
 ### 4.⚙️ Baseline 方法
 
@@ -71,7 +77,18 @@ tsv数据：
 
 ### 5.代码解析
 
-1.baseline.py：为上述baseline的方案。
+1.baseline.py：为上述baseline的方案。baseline使用的是huge模型。准确率可提高到70点。如果使用小的模型会降低recall。
+
+文件使用：
+
+需要配置：
+
+base_model_dir：模型的路径。
+
+data_dir：数据下载的路径。原始数据下载路径。
+
+建议使用GPU的情况下运行。
+
 
 2.model_test.py：测试模型的效果。
 
@@ -83,10 +100,20 @@ tsv数据：
 ### 6.Baseline涨分思路
 
 1.	重排序 (Rerank)
+
 	•	Top-100 先用 CLIP 粗排，再用 Cross-Encoder（如 BERT + 图片特征拼接）做细排。
 	•	常见 trick：CLIP coarse → MiniLM/ERNIE-Reranker fine。
-2.  Prompt Engineering
+
+2.Prompt Engineering
+
 	•	给 query 加提示：
 	•	"这是一个商品搜索：{query}"
-	•	"用户正在搜索电商商品：{query}"
-3.  微调模型：微调Chinese_Clip模型。
+	•	"用户正在搜索电商商品：{query}" 
+
+3. 微调模型：微调Chinese_Clip模型。
+
+### 7.参考资源
+
+https://tianchi.aliyun.com/competition/entrance/532420/information
+
+数据来源信息
