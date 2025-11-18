@@ -109,12 +109,15 @@ data_dir：数据下载的路径。原始数据下载路径。
 1.	重排序 (Rerank)
 
 	•	Top-100 先用 CLIP 粗排，再用 Cross-Encoder（如 BERT + 图片特征拼接）做细排。
+
 	•	常见 trick：CLIP coarse → MiniLM/ERNIE-Reranker fine。
 
 2.Prompt Engineering
 
 	•	给 query 加提示：
+	
 	•	"这是一个商品搜索：{query}"
+	
 	•	"用户正在搜索电商商品：{query}" 
 
 3. 微调模型：微调Chinese_Clip模型。
@@ -124,3 +127,4 @@ data_dir：数据下载的路径。原始数据下载路径。
 https://tianchi.aliyun.com/competition/entrance/532420/information
 
 数据来源信息
+
